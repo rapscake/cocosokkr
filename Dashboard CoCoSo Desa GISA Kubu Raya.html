@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perangkingan Desa GISA • Kabupaten Kubu Raya</title>
+<style>
+:root {
+  --site-primary: #108B8D;
+  --site-on-primary: #FFFFFF;
+  --site-secondary: #BBDAD5;
+  --site-on-secondary: #153B3A;
+  --site-background: #E8F2EF;
+  --site-on-background: #183B39;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  --surface: light-dark(#F9FCFB, #172D30);
+  --surface-soft: light-dark(#EFF7F5, #1D383B);
+  --surface-raised: light-dark(#FFFFFF, #203C3F);
+  --text: light-dark(#183B39, #E6F3F0);
+  --muted: light-dark(#718C88, #9DB9B4);
+  --line: light-dark(#D8E7E3, #355452);
+  --shadow: 0 14px 34px rgba(28, 82, 76, .09);
+  --green: #198B70;
+  --amber: #D49334;
+  --red: #C65F68;
+  --blue: #628BD1;
+}
+* { box-sizing: border-box; }
+html { min-width: 320px; }
+body { margin: 0; min-width: 320px; font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+#app {
+  min-height: 100vh;
+  width: 100%;
+  border-radius: 0;
+  background-color: light-dark(var(--site-background), #122326);
+  color: light-dark(var(--site-on-background), #E6F3F0);
+  overflow: hidden;
+  position: relative;
+}
+#app::before, #app::after { content: ""; pointer-events: none; position: fixed; border-radius: 999px; filter: blur(1px); opacity: var(--site-decoration-opacity); z-index: 0; }
+#app::before { width: 440px; height: 440px; background: radial-gradient(circle, rgba(111,190,176,.22), transparent 68%); right: 7%; top: -210px; }
+#app::after { width: 380px; height: 380px; background: radial-gradient(circle, rgba(117,163,208,.15), transparent 70%); left: 16%; bottom: -220px; }
+.app-shell { position: relative; z-index: 1; display: flex; min-height: 100vh; }
+.sidebar { width: 238px; flex: 0 0 238px; padding: calc(22px * var(--site-spacing-scale)) 16px; background: light-dark(rgba(240,249,246,.92), rgba(19,43,45,.96)); border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 24px; }
+.brand { display:flex; align-items:center; gap:11px; padding: 5px 8px 14px; }
+.brand-mark { height: 36px; width: 36px; border-radius: calc(12px * var(--site-radius-scale)); background: var(--site-primary); color:var(--site-on-primary); display:grid; place-items:center; font-size:17px; font-weight:800; box-shadow: 0 8px 16px rgba(16,139,141,.2); }
+.brand-name { font-family:var(--site-font-heading); font-weight:800; letter-spacing:-.4px; font-size:16px; line-height:1.15; }
+.brand-sub { font-size:10px; color:var(--muted); margin-top:3px; letter-spacing:.5px; }
+.nav-label { color:var(--muted); font-size:10px; font-weight:800; letter-spacing:1.25px; padding: 0 12px; margin-bottom:7px; }
+.nav-list { display:grid; gap:5px; }
+.nav-btn { display:flex; align-items:center; gap:12px; border:0; background:transparent; color:var(--muted); text-align:left; padding:12px 13px; border-radius:calc(12px * var(--site-radius-scale)); font-size:12px; font-weight:650; transition:.18s ease; }
+.nav-btn .nav-ico { width:20px; display:inline-grid; place-items:center; font-size:15px; }
+.nav-btn:hover { background:var(--surface-soft); color:var(--text); }
+.nav-btn.active { background:linear-gradient(110deg,var(--site-primary),#137E83); color:#fff; box-shadow:0 8px 17px rgba(16,139,141,.2); }
+.sidebar-bottom { margin-top:auto; }
+.db-status { padding:13px; background:var(--surface); border:1px solid var(--line); border-radius:calc(14px * var(--site-radius-scale)); }
+.status-line { display:flex; align-items:center; gap:8px; font-size:11px; font-weight:700; }
+.status-dot { width:8px;height:8px;border-radius:50%;background:#24A779;box-shadow:0 0 0 4px rgba(36,167,121,.12); }
+.db-status p { margin:8px 0 0; color:var(--muted); font-size:10px; line-height:1.5; }
+.main { flex:1; min-width:0; padding: 24px clamp(18px,3vw,42px) 38px; }
+.topbar { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:22px; }
+.breadcrumb { font-size:11px; color:var(--muted); }
+.top-actions { display:flex; align-items:center; gap:12px; }
+.top-icon { height:36px;width:36px;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted); }
+.profile { display:flex; align-items:center; gap:9px; padding-left:7px; }
+.avatar { height:35px;width:35px;border-radius:50%;background:linear-gradient(145deg,#B6D9D0,#5D9A93);display:grid;place-items:center;color:#124543;font-weight:800;font-size:12px; }
+.profile strong { display:block;font-size:11px; }
+.profile small { display:block;color:var(--muted);font-size:10px;margin-top:2px; }
+.page-head { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:20px; }
+.eyebrow { color:var(--site-primary); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1.3px; margin-bottom:7px; }
+h1 { font-family:var(--site-font-heading); font-size:calc(29px * var(--site-heading-scale)); line-height:1.13; letter-spacing:-1.1px; margin:0; color:var(--text); }
+h2 { font-family:var(--site-font-heading); font-size:calc(17px * var(--site-heading-scale)); letter-spacing:-.35px; margin:0; color:var(--text); }
+h3 { font-family:var(--site-font-heading); font-size:calc(13px * var(--site-heading-scale)); margin:0; color:var(--text); }
+.subhead { color:var(--muted); font-size:12px; margin:7px 0 0; line-height:1.6; }
+.btn { border:1px solid var(--line); background:var(--surface); color:var(--text); border-radius:calc(10px * var(--site-radius-scale)); padding:10px 14px; font-size:11px; font-weight:750; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:.18s ease; }
+.btn:hover { transform:translateY(-1px); box-shadow:0 7px 16px rgba(25,83,77,.1); }
+.btn-primary { background:var(--site-primary); color:var(--site-on-primary); border-color:var(--site-primary); }
+.btn-soft { background:var(--surface-soft); border-color:transparent; }
+.btn-danger { color:var(--red); }
+.btn-small { padding:7px 10px; font-size:10px; }
+.grid { display:grid; gap:14px; }
+.stats-grid { grid-template-columns:repeat(4,minmax(0,1fr)); margin-bottom:16px; }
+.card { background:var(--surface); border:1px solid var(--line); border-radius:calc(16px * var(--site-radius-scale)); padding:calc(17px * var(--site-spacing-scale)); box-shadow:var(--shadow); min-width:0; }
+.stat-card { min-height:104px; position:relative; overflow:hidden; }
+.stat-top { display:flex;justify-content:space-between;align-items:center;gap:10px; }
+.stat-icon { width:31px;height:31px;border-radius:10px;display:grid;place-items:center;font-size:14px; }
+.stat-label { font-size:10px;color:var(--muted);font-weight:650; }
+.stat-value { font-size:25px;font-weight:800;letter-spacing:-.8px;margin-top:10px;color:var(--text);font-variant-numeric:tabular-nums; }
+.stat-foot { font-size:9px;color:var(--muted);margin-top:3px; }
+.dashboard-grid { grid-template-columns:minmax(0,1.38fr) minmax(280px,.95fr); align-items:stretch; }
+.card-head { display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:15px; }
+.card-head p { font-size:10px;color:var(--muted);margin:5px 0 0; }
+.link-btn { color:var(--site-primary);border:0;background:transparent;font-size:10px;font-weight:800;padding:4px; }
+.table-wrap { width:100%;overflow:auto; }
+table { width:100%;border-collapse:collapse;white-space:nowrap; }
+th { text-align:left;color:var(--muted);font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:10px 9px;border-bottom:1px solid var(--line);font-weight:800; }
+td { font-size:10px;color:var(--text);padding:11px 9px;border-bottom:1px solid var(--line); }
+tbody tr:last-child td { border-bottom:0; }
+tbody tr:hover { background:var(--surface-soft); }
+.rank-num { width:23px;height:23px;border-radius:8px;display:inline-grid;place-items:center;background:var(--surface-soft);font-size:9px;font-weight:800; }
+.rank-num.gold { background:#FFF0C9;color:#926314; }
+.rank-num.silver { background:#E6EDF0;color:#52666E; }
+.rank-num.bronze { background:#F7E2D5;color:#9C5C32; }
+.village-name { font-weight:800; }
+.village-district { font-size:9px;color:var(--muted);margin-top:3px; }
+.score { font-weight:800;font-variant-numeric:tabular-nums; }
+.pill { padding:5px 8px;border-radius:20px;background:var(--surface-soft);font-size:9px;font-weight:750;color:var(--muted);display:inline-flex;align-items:center;gap:5px; }
+.pill.good { color:#168361;background:#E1F4EC; }
+.pill.warn { color:#AB7929;background:#FFF2D9; }
+.chart-box { min-height:160px; }
+.bar-row { display:grid;grid-template-columns:100px 1fr 36px;align-items:center;gap:9px;margin:12px 0; }
+.bar-label { color:var(--muted);font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.bar-track {height:8px;border-radius:20px;background:var(--surface-soft);overflow:hidden;}
+.bar-fill {height:100%;border-radius:20px;background:linear-gradient(90deg,var(--site-primary),#66B8A7);}
+.bar-value {font-size:9px;font-weight:800;text-align:right;color:var(--text);}
+.mini-grid { grid-template-columns:1fr 1fr; margin-top:14px; }
+.mini-card { min-height:88px; display:flex;align-items:center;gap:11px; }
+.mini-icon { width:34px;height:34px;flex-shrink:0;border-radius:11px;display:grid;place-items:center;font-size:15px; }
+.mini-label { font-size:9px;color:var(--muted);font-weight:700; }
+.mini-value { font-size:20px;font-weight:800;letter-spacing:-.5px;margin-top:4px; }
+.banner { margin-top:15px; padding:19px 21px; border-radius:calc(16px * var(--site-radius-scale)); background:linear-gradient(112deg,#127F83,#1C9992); color:#fff; display:flex;align-items:center;justify-content:space-between;gap:18px;overflow:hidden;position:relative; }
+.banner::after {content:"";position:absolute;width:190px;height:190px;right:7%;top:-90px;border-radius:50%;background:rgba(255,255,255,.1);}
+.banner strong {font-size:15px;display:block;letter-spacing:-.3px;}
+.banner p {font-size:10px;color:rgba(255,255,255,.78);margin:5px 0 0;line-height:1.6;max-width:510px;}
+.banner .btn {background:#F2FFFB;color:#116D6D;border:0;position:relative;z-index:1;white-space:nowrap;}
+.toolbar { display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:13px; }
+.searchbox { position:relative;flex:1;min-width:180px; }
+.searchbox input { width:100%;padding:10px 12px 10px 34px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);font-size:11px;outline:none; }
+.searchbox span {position:absolute;left:12px;top:8px;color:var(--muted);font-size:14px;}
+select, input[type="number"], input[type="text"] { color:var(--text); }
+.select {border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 11px;font-size:10px;outline:none;}
+.pagination {display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:13px;color:var(--muted);font-size:10px;}
+.page-buttons {display:flex;gap:5px;}
+.page-buttons button {width:27px;height:27px;border:1px solid var(--line);background:var(--surface);border-radius:8px;color:var(--text);font-size:10px;}
+.page-buttons button.active {background:var(--site-primary);color:white;border-color:var(--site-primary);}
+.split-grid {grid-template-columns:minmax(0,1.25fr) minmax(270px,.75fr);align-items:start;}
+.info-list {display:grid;gap:10px;}
+.info-row {padding:11px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;font-size:10px;}
+.info-row:last-child {border-bottom:0;}
+.info-row span {color:var(--muted);}
+.info-row strong {font-variant-numeric:tabular-nums;text-align:right;}
+.formula {font-family:ui-monospace, SFMono-Regular, Menlo, monospace;background:var(--surface-soft);padding:10px 12px;border-radius:9px;color:var(--text);font-size:10px;line-height:1.7;overflow-wrap:anywhere;margin:8px 0;}
+.criteria-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+.criterion-card {display:grid;gap:12px;}
+.criterion-top {display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.criterion-code {font-size:10px;font-weight:850;color:var(--site-primary);letter-spacing:.8px;}
+.weight-input {width:100%;border:1px solid var(--line);background:var(--surface-soft);padding:10px 12px;border-radius:9px;font-size:16px;font-weight:800;outline:none;}
+.total-weight {font-size:12px;font-weight:800;}
+.total-weight.valid {color:var(--green);}.total-weight.invalid {color:var(--red);}
+.data-note {padding:12px 14px;background:var(--surface-soft);border:1px solid var(--line);border-radius:11px;color:var(--muted);font-size:10px;line-height:1.6;}
+.empty {padding:30px;text-align:center;color:var(--muted);font-size:11px;}
+.modal-backdrop {position:fixed;inset:0;z-index:30;background:rgba(13,37,38,.46);display:none;align-items:center;justify-content:center;padding:16px;}
+.modal-backdrop.open {display:flex;}
+.modal {width:min(540px,100%);max-height:90vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 25px 80px rgba(0,0,0,.22);}
+.modal-head {display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.form-grid {display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.field {display:grid;gap:6px;}
+.field.full {grid-column:1/-1;}
+.field label {font-size:10px;color:var(--muted);font-weight:750;}
+.field input,.field select {width:100%;border:1px solid var(--line);border-radius:9px;background:var(--surface-soft);padding:10px;color:var(--text);font-size:11px;outline:none;}
+.modal-actions {display:flex;justify-content:flex-end;gap:8px;margin-top:17px;}
+.toast {position:fixed;z-index:40;right:20px;bottom:20px;background:#173F3D;color:white;padding:12px 16px;border-radius:11px;box-shadow:0 12px 25px rgba(0,0,0,.2);font-size:11px;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none;max-width:min(360px,calc(100vw - 40px));}
+.toast.show {opacity:1;transform:translateY(0);}
+.loader {position:fixed;inset:0;background:var(--site-background);z-index:50;display:grid;place-items:center;color:var(--text);font-size:12px;gap:8px;}
+.spinner {width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--site-primary);border-radius:50%;animation:spin .8s linear infinite;margin:auto auto 10px;}
+@keyframes spin {to{transform:rotate(360deg)}}
+.muted {color:var(--muted);}
+.small {font-size:10px;}
+.right {text-align:right;}
+@media(max-width:1080px) { .sidebar{width:205px;flex-basis:205px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-grid{grid-template-columns:1fr}.split-grid{grid-template-columns:1fr} }
+@media(max-width:700px) { .app-shell{display:block}.sidebar{width:100%;padding:10px 12px;display:flex;gap:8px;border-right:0;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.brand{padding:0 4px 5px}.brand-mark{width:30px;height:30px}.brand-name{font-size:13px}.brand-sub{display:none}.nav-label,.sidebar-bottom{display:none}.nav-list{display:flex;overflow:auto;gap:5px;padding-bottom:2px}.nav-btn{padding:9px 11px;white-space:nowrap;font-size:10px;gap:6px}.nav-btn .nav-ico{width:auto}.main{padding:17px 13px 28px}.topbar{margin-bottom:16px}.top-actions .top-icon{display:none}.profile small{display:none}.page-head{align-items:flex-start;flex-direction:column;margin-bottom:15px}.page-head .btn{align-self:stretch}.stats-grid{gap:9px}.card{padding:13px}.stat-card{min-height:93px}.stat-value{font-size:22px}.mini-grid{gap:8px}.banner{align-items:flex-start;flex-direction:column}.banner .btn{align-self:flex-start}.criteria-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar .select{flex:1}.toolbar .btn{flex:1}.bar-row{grid-template-columns:85px 1fr 32px}h1{font-size:24px} }
+@media print {
+  body,#app {background:#fff !important;color:#111 !important;overflow:visible !important;}
+  .sidebar,.topbar,.page-head .btn,.toolbar,.link-btn,.banner .btn,.modal-backdrop,.toast,.no-print {display:none !important;}
+  .app-shell,.main {display:block !important;padding:0 !important;}
+  .card {box-shadow:none !important;border:1px solid #ddd !important;break-inside:avoid;background:#fff !important;}
+  .page-head {display:block !important;margin:0 0 15px !important;}
+  h1,h2,h3,td,th {color:#111 !important;}
+  .table-wrap {overflow:visible !important;}
+  table {white-space:normal !important;}
+  th,td {font-size:8pt !important;padding:5px !important;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="loader" id="loader"><div><div class="spinner"></div><div>Menyiapkan data CoCoSo…</div></div></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">G</div><div><div class="brand-name">GISA Kubu Raya</div><div class="brand-sub">COCOSO ANALYTICS</div></div></div>
+      <div>
+        <div class="nav-label">MENU UTAMA</div>
+        <nav class="nav-list" id="navigation">
+          <button class="nav-btn active" data-page="dashboard"><span class="nav-ico">▦</span>Dashboard</button>
+          <button class="nav-btn" data-page="data"><span class="nav-ico">▤</span>Data Desa</button>
+          <button class="nav-btn" data-page="calculation"><span class="nav-ico">∑</span>Perhitungan</button>
+          <button class="nav-btn" data-page="ranking"><span class="nav-ico">🏆</span>Perankingan</button>
+          <button class="nav-btn" data-page="criteria"><span class="nav-ico">⚖</span>Kriteria & Bobot</button>
+          <button class="nav-btn" data-page="reports"><span class="nav-ico">▧</span>Laporan</button>
+        </nav>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="db-status"><div class="status-line"><span class="status-dot"></span><span id="db-label">Database lokal aktif</span></div><p>Data tersimpan pada browser/perangkat ini melalui IndexedDB.</p></div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="breadcrumb">GISA / <strong id="crumb">Dashboard</strong></div>
+        <div class="top-actions"><div class="top-icon">⌕</div><div class="top-icon">♧</div><div class="profile"><div class="avatar">AD</div><div><strong>Administrator</strong><small>Pengelola Data GISA</small></div></div></div>
+      </div>
+      <section id="content"></section>
+    </main>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-backdrop"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const SEED_DATA = [{"id":1,"kecamatan":"SUNGAI RAYA","desa":"SUNGAI RAYA","k1":515,"k2":14900,"k3":2,"k4":1},{"id":2,"kecamatan":"SUNGAI RAYA","desa":"SUNGAI AMBANGAH","k1":271,"k2":6492,"k3":18,"k4":1},{"id":3,"kecamatan":"SUNGAI RAYA","desa":"ARANG LIMBUNG","k1":418,"k2":28923,"k3":5,"k4":0},{"id":4,"kecamatan":"SUNGAI RAYA","desa":"KUALA DUA","k1":850,"k2":32885,"k3":8,"k4":1},{"id":5,"kecamatan":"SUNGAI RAYA","desa":"TEBANG KACANG","k1":290,"k2":4927,"k3":22,"k4":1},{"id":6,"kecamatan":"SUNGAI RAYA","desa":"SUNGAI ASAM","k1":295,"k2":5892,"k3":35,"k4":1},{"id":7,"kecamatan":"SUNGAI RAYA","desa":"PULAU LIMBUNG","k1":723,"k2":2330,"k3":28,"k4":1},{"id":8,"kecamatan":"SUNGAI RAYA","desa":"KAPUR","k1":124,"k2":18473,"k3":10,"k4":1},{"id":9,"kecamatan":"SUNGAI RAYA","desa":"GUNUNG TAMANG","k1":551,"k2":1971,"k3":42,"k4":1},{"id":10,"kecamatan":"SUNGAI RAYA","desa":"SUNGAI BULAN","k1":346,"k2":3467,"k3":38,"k4":1},{"id":11,"kecamatan":"SUNGAI RAYA","desa":"LIMBUNG","k1":856,"k2":17891,"k3":4,"k4":1},{"id":12,"kecamatan":"SUNGAI RAYA","desa":"TELUK KAPUAS","k1":1895,"k2":13964,"k3":6,"k4":1},{"id":13,"kecamatan":"SUNGAI RAYA","desa":"MADU SARI","k1":696,"k2":5253,"k3":12,"k4":1},{"id":14,"kecamatan":"SUNGAI RAYA","desa":"MEKAR SARI","k1":1041,"k2":12533,"k3":14,"k4":1},{"id":15,"kecamatan":"SUNGAI RAYA","desa":"MEKAR BARU","k1":386,"k2":15814,"k3":12,"k4":1},{"id":16,"kecamatan":"SUNGAI RAYA","desa":"SUNGAI RAYA DALAM","k1":1906,"k2":24280,"k3":3,"k4":1},{"id":17,"kecamatan":"SUNGAI RAYA","desa":"PARIT BARU","k1":2,"k2":31932,"k3":4,"k4":1},{"id":18,"kecamatan":"SUNGAI RAYA","desa":"PULAU JAMBU","k1":163,"k2":966,"k3":30,"k4":1},{"id":19,"kecamatan":"SUNGAI RAYA","desa":"KALIBANDUNG","k1":2,"k2":2064,"k3":45,"k4":1},{"id":20,"kecamatan":"SUNGAI RAYA","desa":"MUARA BARU","k1":93,"k2":1140,"k3":48,"k4":1},{"id":21,"kecamatan":"SUNGAI RAYA","desa":"SUKULANTING","k1":519,"k2":2613,"k3":55,"k4":1},{"id":22,"kecamatan":"SUNGAI RAYA","desa":"PERMATA JAYA","k1":696,"k2":4821,"k3":50,"k4":1},{"id":23,"kecamatan":"KUALA MANDOR B","desa":"KUALA MANDOR B","k1":846,"k2":6601,"k3":45,"k4":1},{"id":24,"kecamatan":"KUALA MANDOR B","desa":"KUBU PADI","k1":790,"k2":2556,"k3":52,"k4":1},{"id":25,"kecamatan":"KUALA MANDOR B","desa":"KUALA MANDOR A","k1":682,"k2":6938,"k3":40,"k4":1},{"id":26,"kecamatan":"KUALA MANDOR B","desa":"RETOK","k1":585,"k2":3502,"k3":58,"k4":1},{"id":27,"kecamatan":"KUALA MANDOR B","desa":"SUNGAI ENAU","k1":1048,"k2":6555,"k3":62,"k4":1},{"id":28,"kecamatan":"KUALA MANDOR B","desa":"PADI JAYA","k1":1133,"k2":2589,"k3":48,"k4":1},{"id":29,"kecamatan":"SUNGAI AMBAWANG","desa":"SIMPANG KANAN","k1":415,"k2":6008,"k3":32,"k4":1},{"id":30,"kecamatan":"SUNGAI AMBAWANG","desa":"MEGA TIMUR","k1":1544,"k2":10122,"k3":22,"k4":1},{"id":31,"kecamatan":"SUNGAI AMBAWANG","desa":"BENGKAREK","k1":174,"k2":3459,"k3":45,"k4":1},{"id":32,"kecamatan":"SUNGAI AMBAWANG","desa":"LINGGA","k1":790,"k2":6004,"k3":28,"k4":1},{"id":33,"kecamatan":"SUNGAI AMBAWANG","desa":"SUNGAI AMBAWANG KUALA","k1":1221,"k2":16070,"k3":16,"k4":0},{"id":34,"kecamatan":"SUNGAI AMBAWANG","desa":"JAWA TENGAH","k1":835,"k2":5855,"k3":20,"k4":0},{"id":35,"kecamatan":"SUNGAI AMBAWANG","desa":"DURIAN","k1":527,"k2":8770,"k3":35,"k4":0},{"id":36,"kecamatan":"SUNGAI AMBAWANG","desa":"PANCAROBA","k1":761,"k2":4700,"k3":42,"k4":1},{"id":37,"kecamatan":"SUNGAI AMBAWANG","desa":"PUGUK","k1":705,"k2":4571,"k3":38,"k4":1},{"id":38,"kecamatan":"SUNGAI AMBAWANG","desa":"KOREK","k1":249,"k2":5821,"k3":30,"k4":1},{"id":39,"kecamatan":"SUNGAI AMBAWANG","desa":"PASAK","k1":190,"k2":4731,"k3":50,"k4":1},{"id":40,"kecamatan":"SUNGAI AMBAWANG","desa":"PASAK PIANG","k1":328,"k2":3488,"k3":54,"k4":0},{"id":41,"kecamatan":"SUNGAI AMBAWANG","desa":"TELUK BAKUNG","k1":991,"k2":5821,"k3":40,"k4":0},{"id":42,"kecamatan":"SUNGAI AMBAWANG","desa":"AMPERA RAYA","k1":964,"k2":4972,"k3":18,"k4":1},{"id":43,"kecamatan":"SUNGAI AMBAWANG","desa":"SUNGAI MALAYA","k1":1061,"k2":4064,"k3":25,"k4":1},{"id":44,"kecamatan":"TERENTANG","desa":"TELUK EMPENING","k1":166,"k2":1309,"k3":75,"k4":1},{"id":45,"kecamatan":"TERENTANG","desa":"TERENTANG HILIR","k1":80,"k2":537,"k3":85,"k4":1},{"id":46,"kecamatan":"TERENTANG","desa":"TERENTANG HULU","k1":234,"k2":1560,"k3":82,"k4":1},{"id":47,"kecamatan":"TERENTANG","desa":"PERMATA","k1":327,"k2":1641,"k3":68,"k4":0},{"id":48,"kecamatan":"TERENTANG","desa":"BETUAH","k1":191,"k2":871,"k3":70,"k4":0},{"id":49,"kecamatan":"TERENTANG","desa":"SUNGAI RADAK SATU","k1":344,"k2":1921,"k3":62,"k4":1},{"id":50,"kecamatan":"TERENTANG","desa":"SUNGAI RADAK DUA","k1":286,"k2":2062,"k3":65,"k4":1},{"id":51,"kecamatan":"TERENTANG","desa":"SUNGAI DUNGUN","k1":338,"k2":1029,"k3":78,"k4":1},{"id":52,"kecamatan":"TERENTANG","desa":"TELUK BAYUR","k1":344,"k2":1785,"k3":88,"k4":1},{"id":53,"kecamatan":"TERENTANG","desa":"RADAK BARU","k1":429,"k2":1601,"k3":67,"k4":1},{"id":54,"kecamatan":"BATU AMPAR","desa":"TANJUNG BERINGIN","k1":1,"k2":560,"k3":145,"k4":1},{"id":55,"kecamatan":"BATU AMPAR","desa":"BATU AMPAR","k1":1054,"k2":9589,"k3":120,"k4":1},{"id":56,"kecamatan":"BATU AMPAR","desa":"TELUK NIBUNG","k1":981,"k2":3808,"k3":135,"k4":1},{"id":57,"kecamatan":"BATU AMPAR","desa":"PADANG TIKAR SATU","k1":892,"k2":4373,"k3":110,"k4":0},{"id":58,"kecamatan":"BATU AMPAR","desa":"PADANG TIKAR DUA","k1":1320,"k2":4652,"k3":108,"k4":1},{"id":59,"kecamatan":"BATU AMPAR","desa":"TASIK MALAYA","k1":495,"k2":1422,"k3":125,"k4":1},{"id":60,"kecamatan":"BATU AMPAR","desa":"SUNGAI BESAR","k1":210,"k2":1178,"k3":130,"k4":1},{"id":61,"kecamatan":"BATU AMPAR","desa":"SUNGAI JAWI","k1":314,"k2":1118,"k3":115,"k4":1},{"id":62,"kecamatan":"BATU AMPAR","desa":"NIPAH PANJANG","k1":882,"k2":2772,"k3":105,"k4":1},{"id":63,"kecamatan":"BATU AMPAR","desa":"AMBARAWA","k1":439,"k2":1092,"k3":112,"k4":0},{"id":64,"kecamatan":"BATU AMPAR","desa":"TANJUNG HARAPAN","k1":528,"k2":1621,"k3":140,"k4":1},{"id":65,"kecamatan":"BATU AMPAR","desa":"SUNGAI KERAWANG","k1":293,"k2":1592,"k3":128,"k4":1},{"id":66,"kecamatan":"BATU AMPAR","desa":"SUMBER AGUNG","k1":317,"k2":1338,"k3":118,"k4":1},{"id":67,"kecamatan":"BATU AMPAR","desa":"MUARA TIGA","k1":139,"k2":1746,"k3":132,"k4":1},{"id":68,"kecamatan":"BATU AMPAR","desa":"MEDAN MAS","k1":304,"k2":1145,"k3":122,"k4":0},{"id":69,"kecamatan":"KUBU","desa":"KUBU","k1":701,"k2":6015,"k3":95,"k4":1},{"id":70,"kecamatan":"KUBU","desa":"OLAK-OLAK KUBU","k1":629,"k2":4259,"k3":90,"k4":0},{"id":71,"kecamatan":"KUBU","desa":"SUNGAI SELAMAT","k1":87,"k2":760,"k3":115,"k4":0},{"id":72,"kecamatan":"KUBU","desa":"SUNGAI BEMBAN","k1":207,"k2":2879,"k3":105,"k4":0},{"id":73,"kecamatan":"KUBU","desa":"PINANG LUAR","k1":424,"k2":2603,"k3":82,"k4":1},{"id":74,"kecamatan":"KUBU","desa":"SERUAT DUA","k1":511,"k2":1522,"k3":110,"k4":1},{"id":75,"kecamatan":"KUBU","desa":"SERUAT TIGA","k1":73,"k2":1832,"k3":118,"k4":0},{"id":76,"kecamatan":"KUBU","desa":"DABONG","k1":352,"k2":2642,"k3":130,"k4":1},{"id":77,"kecamatan":"KUBU","desa":"AMBAWANG","k1":357,"k2":3452,"k3":88,"k4":0},{"id":78,"kecamatan":"KUBU","desa":"SEPAKAT BARU","k1":20,"k2":555,"k3":125,"k4":0},{"id":79,"kecamatan":"KUBU","desa":"KAMPUNG BARU","k1":251,"k2":2600,"k3":100,"k4":1},{"id":80,"kecamatan":"KUBU","desa":"AIR PUTIH","k1":614,"k2":3321,"k3":108,"k4":1},{"id":81,"kecamatan":"KUBU","desa":"TELUK NANGKA","k1":1029,"k2":3718,"k3":102,"k4":1},{"id":82,"kecamatan":"KUBU","desa":"JANGKANG SATU","k1":0,"k2":1831,"k3":135,"k4":0},{"id":83,"kecamatan":"KUBU","desa":"JANGKANG DUA","k1":6,"k2":1757,"k3":138,"k4":0},{"id":84,"kecamatan":"KUBU","desa":"PINANG DALAM","k1":278,"k2":1487,"k3":98,"k4":1},{"id":85,"kecamatan":"KUBU","desa":"SUNGAI TERUS","k1":311,"k2":1299,"k3":112,"k4":1},{"id":86,"kecamatan":"KUBU","desa":"PELITA JAYA","k1":269,"k2":920,"k3":120,"k4":1},{"id":87,"kecamatan":"KUBU","desa":"MENGKALANG","k1":156,"k2":1182,"k3":124,"k4":0},{"id":88,"kecamatan":"KUBU","desa":"MENGKALANG JAMBU","k1":96,"k2":582,"k3":126,"k4":1},{"id":89,"kecamatan":"RASAU JAYA","desa":"RASAU JAYA UMUM","k1":1835,"k2":7637,"k3":26,"k4":1},{"id":90,"kecamatan":"RASAU JAYA","desa":"RASAU JAYA SATU","k1":1202,"k2":10264,"k3":28,"k4":1},{"id":91,"kecamatan":"RASAU JAYA","desa":"RASAU JAYA DUA","k1":725,"k2":5935,"k3":30,"k4":1},{"id":92,"kecamatan":"RASAU JAYA","desa":"RASAU JAYA TIGA","k1":987,"k2":6376,"k3":32,"k4":1},{"id":93,"kecamatan":"RASAU JAYA","desa":"BINTANG MAS","k1":143,"k2":1694,"k3":36,"k4":1},{"id":94,"kecamatan":"RASAU JAYA","desa":"PEMATANG TUJUH","k1":329,"k2":1957,"k3":34,"k4":1},{"id":95,"kecamatan":"TELUK PAKEDAI","desa":"TELUK PAKEDAI HULU","k1":546,"k2":2172,"k3":52,"k4":1},{"id":96,"kecamatan":"TELUK PAKEDAI","desa":"TELUK PAKEDAI SATU","k1":257,"k2":1125,"k3":50,"k4":1},{"id":97,"kecamatan":"TELUK PAKEDAI","desa":"TELUK PAKEDAI DUA","k1":311,"k2":1209,"k3":54,"k4":1},{"id":98,"kecamatan":"TELUK PAKEDAI","desa":"KUALA KARANG","k1":570,"k2":1526,"k3":72,"k4":1},{"id":99,"kecamatan":"TELUK PAKEDAI","desa":"SERUAT SATU","k1":104,"k2":270,"k3":68,"k4":1},{"id":100,"kecamatan":"TELUK PAKEDAI","desa":"SUNGAI DERAS","k1":599,"k2":4031,"k3":48,"k4":1},{"id":101,"kecamatan":"TELUK PAKEDAI","desa":"SELAT REMIS","k1":363,"k2":3140,"k3":60,"k4":1},{"id":102,"kecamatan":"TELUK PAKEDAI","desa":"MADURA","k1":193,"k2":1005,"k3":58,"k4":1},{"id":103,"kecamatan":"TELUK PAKEDAI","desa":"PASIR PUTIH","k1":298,"k2":1133,"k3":62,"k4":1},{"id":104,"kecamatan":"TELUK PAKEDAI","desa":"TELUK GELAM","k1":142,"k2":890,"k3":65,"k4":1},{"id":105,"kecamatan":"TELUK PAKEDAI","desa":"TANJUNG BUNGA","k1":298,"k2":1629,"k3":56,"k4":1},{"id":106,"kecamatan":"TELUK PAKEDAI","desa":"SUNGAI NIBUNG","k1":108,"k2":1058,"k3":75,"k4":0},{"id":107,"kecamatan":"TELUK PAKEDAI","desa":"ARUS DERAS","k1":302,"k2":1034,"k3":55,"k4":1},{"id":108,"kecamatan":"TELUK PAKEDAI","desa":"SUNGAI NIPAH","k1":314,"k2":1194,"k3":64,"k4":1},{"id":109,"kecamatan":"SUNGAI KAKAP","desa":"SUNGAI KAKAP","k1":2172,"k2":12288,"k3":28,"k4":1},{"id":110,"kecamatan":"SUNGAI KAKAP","desa":"SUNGAI ITIK","k1":976,"k2":5634,"k3":32,"k4":1},{"id":111,"kecamatan":"SUNGAI KAKAP","desa":"JERUJU BESAR","k1":1892,"k2":7424,"k3":22,"k4":1},{"id":112,"kecamatan":"SUNGAI KAKAP","desa":"SUNGAI KUPAH","k1":1024,"k2":3736,"k3":35,"k4":1},{"id":113,"kecamatan":"SUNGAI KAKAP","desa":"SUNGAI RENGAS","k1":2019,"k2":15203,"k3":15,"k4":1},{"id":114,"kecamatan":"SUNGAI KAKAP","desa":"PAL SEMBILAN","k1":2792,"k2":28827,"k3":12,"k4":1},{"id":115,"kecamatan":"SUNGAI KAKAP","desa":"SUNGAI BELIDAK","k1":680,"k2":3703,"k3":24,"k4":1},{"id":116,"kecamatan":"SUNGAI KAKAP","desa":"KALIMAS","k1":1938,"k2":7776,"k3":20,"k4":1},{"id":117,"kecamatan":"SUNGAI KAKAP","desa":"PUNGGUR KECIL","k1":3158,"k2":16174,"k3":16,"k4":1},{"id":118,"kecamatan":"SUNGAI KAKAP","desa":"PUNGGUR BESAR","k1":714,"k2":8926,"k3":18,"k4":1},{"id":119,"kecamatan":"SUNGAI KAKAP","desa":"TANJUNG SALEH","k1":623,"k2":4717,"k3":38,"k4":1},{"id":120,"kecamatan":"SUNGAI KAKAP","desa":"SEPUK LAUT","k1":634,"k2":2564,"k3":42,"k4":1},{"id":121,"kecamatan":"SUNGAI KAKAP","desa":"PUNGGUR KAPUAS","k1":624,"k2":2523,"k3":25,"k4":1},{"id":122,"kecamatan":"SUNGAI KAKAP","desa":"RENGAS KAPUAS","k1":914,"k2":11115,"k3":14,"k4":1},{"id":123,"kecamatan":"SUNGAI KAKAP","desa":"PARIT KELADI","k1":1786,"k2":2798,"k3":21,"k4":1}];
+const DEFAULT_SETTINGS = {weights:[0.25,0.25,0.25,0.25],lambda:0.5};
+const CRITERIA = [
+  {code:'K1',name:'Jumlah Pelayanan',type:'Benefit',desc:'Semakin banyak volume pelayanan administrasi kependudukan, semakin tinggi skornya.'},
+  {code:'K2',name:'Jumlah Penduduk',type:'Benefit',desc:'Semakin besar skala populasi desa, semakin besar prioritas beban pelayanan.'},
+  {code:'K3',name:'Jarak ke Ibu Kota Kabupaten',type:'Cost',desc:'Semakin dekat jaraknya, semakin baik nilainya.'},
+  {code:'K4',name:'Pelaporan Buku Pokok Pemakaman',type:'Benefit',desc:'Indikator biner: 1 = melaporkan, 0 = tidak melaporkan.'}
+];
+let db=null, records=[], settings={...DEFAULT_SETTINGS}, activePage='dashboard', dataPage=1, rankPage=1, searchTerm='', districtFilter='Semua Kecamatan', rankingFilter='Semua Desa', selectedVillageId=1, currentSort='score';
+const $ = (sel,root=document)=>root.querySelector(sel);
+const $$ = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
+const fmt = (n,d=0)=>Number(n||0).toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtScore = n=>fmt(n,4);
+const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const normKey = s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+function openDB(){
+  return new Promise((resolve,reject)=>{
+    if(!('indexedDB' in window)){resolve(null);return;}
+    const req=indexedDB.open('gisa-cocoso-kubu-raya',1);
+    req.onupgradeneeded=()=>{const d=req.result;if(!d.objectStoreNames.contains('desa'))d.createObjectStore('desa',{keyPath:'id'});if(!d.objectStoreNames.contains('settings'))d.createObjectStore('settings',{keyPath:'key'});};
+    req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+  });
+}
+function txStore(store,mode='readonly'){return db.transaction(store,mode).objectStore(store);}
+function getAll(store){return new Promise((resolve,reject)=>{const r=txStore(store).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error);});}
+function putOne(store,value){return new Promise((resolve,reject)=>{const r=txStore(store,'readwrite').put(value);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error);});}
+function deleteOne(store,key){return new Promise((resolve,reject)=>{const r=txStore(store,'readwrite').delete(key);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error);});}
+function clearStore(store){return new Promise((resolve,reject)=>{const r=txStore(store,'readwrite').clear();r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error);});}
+async function persistAll(){if(!db)return;await clearStore('desa');for(const r of records)await putOne('desa',r);}
+async function init(){
+  try{db=await openDB();if(db){records=await getAll('desa');if(!records.length){records=SEED_DATA.map(x=>({...x}));await persistAll();}const s=await getAll('settings');const saved=s.find(x=>x.key==='main');if(saved?.value)settings=saved.value;}else{records=JSON.parse(localStorage.getItem('gisa-cocoso-data')||'null')||SEED_DATA.map(x=>({...x}));settings=JSON.parse(localStorage.getItem('gisa-cocoso-settings')||'null')||{...DEFAULT_SETTINGS};$('#db-label').textContent='Mode penyimpanan browser';}}
+  catch(e){records=SEED_DATA.map(x=>({...x}));showToast('Database tidak dapat dibuka; data berjalan dalam mode sementara.');}
+  records=records.map((r,i)=>({id:Number(r.id??r.no??i+1),kecamatan:String(r.kecamatan||'').trim(),desa:String(r.desa||'').trim(),k1:Number(r.k1)||0,k2:Number(r.k2)||0,k3:Number(r.k3)||0,k4:Number(r.k4)||0})).sort((a,b)=>a.id-b.id);
+  if(!records.length)records=SEED_DATA.map(x=>({...x}));
+  $('#loader').style.display='none';render();
+}
+async function saveRecords(){if(db)await persistAll();else localStorage.setItem('gisa-cocoso-data',JSON.stringify(records));}
+async function saveSettings(){if(db)await putOne('settings',{key:'main',value:settings});else localStorage.setItem('gisa-cocoso-settings',JSON.stringify(settings));}
+function calcCoCoSo(input=records,w=settings.weights,lambda=settings.lambda){
+  if(!input.length)return [];
+  const fields=['k1','k2','k3','k4'];
+  const mins=fields.map(k=>Math.min(...input.map(r=>Number(r[k])||0)));
+  const maxs=fields.map(k=>Math.max(...input.map(r=>Number(r[k])||0)));
+  const normalized=input.map(r=>fields.map((k,j)=>{
+    const x=Number(r[k])||0;if(maxs[j]===mins[j])return 1;
+    return j===2?(maxs[j]-x)/(maxs[j]-mins[j]):(x-mins[j])/(maxs[j]-mins[j]);
+  }));
+  const S=normalized.map(v=>v.reduce((sum,x,j)=>sum+w[j]*x,0));
+  // Mengikuti dokumen: P_i = jumlah (r_ij ^ w_j), bukan hasil perkalian.
+  const P=normalized.map(v=>v.reduce((sum,x,j)=>sum+Math.pow(Math.max(0,x),w[j]),0));
+  const minS=Math.min(...S),minP=Math.min(...P),maxS=Math.max(...S),maxP=Math.max(...P);
+  const totalSP=S.reduce((sum,x,i)=>sum+x+P[i],0);
+  const denomC=lambda*maxS+(1-lambda)*maxP;
+  const out=input.map((r,i)=>{
+    const kia=totalSP?(P[i]+S[i])/totalSP:0;
+    const kib=(minS?S[i]/minS:0)+(minP?P[i]/minP:0);
+    const kic=denomC?(lambda*S[i]+(1-lambda)*P[i])/denomC:0;
+    const ki=Math.cbrt(Math.max(0,kia*kib*kic))+(kia+kib+kic)/3;
+    return {...r,norm:normalized[i],S:S[i],P:P[i],kia,kib,kic,ki};
+  });
+  out.sort((a,b)=>b.ki-a.ki||a.desa.localeCompare(b.desa,'id'));
+  out.forEach((r,i)=>r.rank=i+1);
+  return out;
+}
+let results=[];
+function updateResults(){results=calcCoCoSo();}
+function districts(){return [...new Set(records.map(r=>r.kecamatan))].sort((a,b)=>a.localeCompare(b,'id'));}
+function pageHead(eyebrow,title,desc,button=''){return `<div class="page-head"><div><div class="eyebrow">${eyebrow}</div><h1>${title}</h1><p class="subhead">${desc}</p></div>${button}</div>`;}
+function rankBadge(rank){return `<span class="rank-num ${rank===1?'gold':rank===2?'silver':rank===3?'bronze':''}">${rank}</span>`;}
+function topTable(list,limit=6){return `<div class="table-wrap"><table><thead><tr><th>Rank</th><th>Desa</th><th>Pelayanan</th><th>Penduduk</th><th>Skor CoCoSo</th></tr></thead><tbody>${list.slice(0,limit).map(r=>`<tr><td>${rankBadge(r.rank)}</td><td><div class="village-name">${esc(r.desa)}</div><div class="village-district">${esc(r.kecamatan)}</div></td><td>${fmt(r.k1)}</td><td>${fmt(r.k2)}</td><td class="score">${fmtScore(r.ki)}</td></tr>`).join('')}</tbody></table></div>`;}
+function pageDashboard(){
+  const best=results[0], avg=results.reduce((s,r)=>s+r.ki,0)/(results.length||1), topDistricts=[...districts()].map(k=>({name:k,count:records.filter(r=>r.kecamatan===k).length})).sort((a,b)=>b.count-a.count).slice(0,5), maxCount=topDistricts[0]?.count||1;
+  const k4yes=records.filter(r=>r.k4===1).length, k4pct=k4yes/(records.length||1)*100;
+  return `${pageHead('RINGKASAN EVALUASI','Dashboard CoCoSo','Perangkingan Desa GISA dalam Pelayanan Administrasi Kependudukan di Kabupaten Kubu Raya.',`<button class="btn btn-primary" data-action="go-ranking">Lihat hasil ranking&nbsp; ↗</button>`)}
+  <div class="grid stats-grid">
+    <div class="card stat-card"><div class="stat-top"><span class="stat-label">TOTAL DESA DIEVALUASI</span><span class="stat-icon" style="background:#DDF1ED;color:#168579">▤</span></div><div class="stat-value">${fmt(records.length)}</div><div class="stat-foot">Tersebar di ${districts().length} kecamatan</div></div>
+    <div class="card stat-card"><div class="stat-top"><span class="stat-label">DESA PERINGKAT PERTAMA</span><span class="stat-icon" style="background:#FFF0CE;color:#B77B1F">♛</span></div><div class="stat-value" style="font-size:19px">${esc(best?.desa||'—')}</div><div class="stat-foot">${esc(best?.kecamatan||'')} · skor ${fmtScore(best?.ki||0)}</div></div>
+    <div class="card stat-card"><div class="stat-top"><span class="stat-label">SKOR TERTINGGI</span><span class="stat-icon" style="background:#E7EAFE;color:#6D78C4">✦</span></div><div class="stat-value">${fmtScore(best?.ki||0)}</div><div class="stat-foot">${esc(best?.desa||'Desa terbaik')}</div></div>
+    <div class="card stat-card"><div class="stat-top"><span class="stat-label">RATA-RATA SKOR</span><span class="stat-icon" style="background:#FCE9E7;color:#C16F67">◉</span></div><div class="stat-value">${fmtScore(avg)}</div><div class="stat-foot">Rata-rata hasil seluruh desa</div></div>
+  </div>
+  <div class="grid dashboard-grid">
+    <div class="card"><div class="card-head"><div><h2>10 Desa dengan Skor Tertinggi</h2><p>Hasil penggabungan nilai kompromi metode CoCoSo</p></div><button class="link-btn" data-action="go-ranking">Lihat semua ↗</button></div>${topTable(results,6)}</div>
+    <div class="grid" style="gap:14px;align-content:start">
+      <div class="card"><div class="card-head"><div><h2>Komposisi Pelaporan K4</h2><p>Pelaporan Buku Pokok Pemakaman</p></div><span class="pill good">K4</span></div><div style="display:flex;align-items:center;gap:14px;margin-top:17px"><div style="width:86px;height:86px;border-radius:50%;background:conic-gradient(#14917F ${k4pct}%,var(--surface-soft) 0);display:grid;place-items:center;position:relative"><div style="width:64px;height:64px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-weight:850;font-size:15px">${fmt(k4pct,0)}%</div></div><div style="flex:1"><div class="info-row"><span>Melaporkan (1)</span><strong>${fmt(k4yes)} desa</strong></div><div class="info-row"><span>Tidak melaporkan (0)</span><strong>${fmt(records.length-k4yes)} desa</strong></div></div></div></div>
+      <div class="card"><div class="card-head"><div><h2>Jumlah Desa per Kecamatan</h2><p>5 kecamatan dengan jumlah desa terbanyak</p></div></div><div class="chart-box">${topDistricts.map(d=>`<div class="bar-row"><div class="bar-label">${esc(d.name)}</div><div class="bar-track"><div class="bar-fill" style="width:${d.count/maxCount*100}%"></div></div><div class="bar-value">${d.count}</div></div>`).join('')}</div></div>
+    </div>
+  </div>
+  <div class="banner"><div><strong>Hasil evaluasi GISA • Kabupaten Kubu Raya</strong><p>Gunakan hasil perangkingan untuk melihat profil setiap desa, mengevaluasi indikator pelayanan, dan mengidentifikasi desa prioritas pembinaan.</p></div><button class="btn" data-page="reports">Buka laporan lengkap →</button></div>`;
+}
+function filteredRecords(){return records.filter(r=>(districtFilter==='Semua Kecamatan'||r.kecamatan===districtFilter)&&(!searchTerm||`${r.desa} ${r.kecamatan}`.toLowerCase().includes(searchTerm.toLowerCase()))).sort((a,b)=>a.id-b.id);}
+function pageData(){
+ const list=filteredRecords(), pageSize=12, pages=Math.max(1,Math.ceil(list.length/pageSize));dataPage=Math.min(dataPage,pages);const slice=list.slice((dataPage-1)*pageSize,dataPage*pageSize);
+ const rows=slice.map(r=>`<tr><td>${r.id}</td><td>${esc(r.kecamatan)}</td><td><strong>${esc(r.desa)}</strong></td><td>${fmt(r.k1)}</td><td>${fmt(r.k2)}</td><td>${fmt(r.k3)} km</td><td><span class="pill ${r.k4?'good':'warn'}">${r.k4?'Melaporkan':'Tidak'}</span></td><td><button class="btn btn-small btn-soft" data-action="edit" data-id="${r.id}">Edit</button></td></tr>`).join('');
+ return `${pageHead('MANAJEMEN DATA','Data Desa','Kelola 123 data desa sebagai alternatif pada perhitungan CoCoSo.',`<button class="btn btn-primary" data-action="add">＋ Tambah Desa</button>`)}
+ <div class="card"><div class="toolbar"><div class="searchbox"><span>⌕</span><input id="search-input" value="${esc(searchTerm)}" placeholder="Cari nama desa atau kecamatan…"></div><select class="select" id="district-filter"><option>Semua Kecamatan</option>${districts().map(d=>`<option ${districtFilter===d?'selected':''}>${esc(d)}</option>`).join('')}</select><button class="btn btn-soft" data-action="import">⇧ Import Excel</button><button class="btn btn-soft" data-action="export-data">⇩ Export Excel</button></div>
+ <div class="table-wrap"><table><thead><tr><th>No</th><th>Kecamatan</th><th>Nama Desa</th><th>K1 Pelayanan</th><th>K2 Penduduk</th><th>K3 Jarak</th><th>K4 Buku</th><th>Aksi</th></tr></thead><tbody>${rows||'<tr><td colspan="8" class="empty">Tidak ada data yang cocok.</td></tr>'}</tbody></table></div>
+ <div class="pagination"><span>Menampilkan ${list.length?((dataPage-1)*pageSize+1):0}–${Math.min(dataPage*pageSize,list.length)} dari ${list.length} desa</span><div class="page-buttons"><button data-action="data-prev" ${dataPage===1?'disabled':''}>‹</button><span class="pill">${dataPage} / ${pages}</span><button data-action="data-next" ${dataPage===pages?'disabled':''}>›</button></div></div></div>
+ <div class="data-note" style="margin-top:13px">Catatan: perubahan data akan memengaruhi normalisasi, nilai Sᵢ dan Pᵢ, skor akhir, serta seluruh urutan ranking secara otomatis.</div>
+ <input type="file" id="import-file" accept=".xlsx,.csv,.txt" hidden>`;
+}
+function pageCalculation(){
+ const selected=results.find(r=>r.id===Number(selectedVillageId))||results[0];
+ const rows=results.slice(0,12).map(r=>`<tr><td>${r.rank}</td><td><strong>${esc(r.desa)}</strong><div class="village-district">${esc(r.kecamatan)}</div></td><td>${r.norm.map(v=>fmt(v,3)).join(' · ')}</td><td>${fmt(r.S,5)}</td><td>${fmt(r.P,5)}</td><td class="score">${fmtScore(r.ki)}</td></tr>`).join('');
+ return `${pageHead('PROSES METODE','Perhitungan CoCoSo','Lihat nilai normalisasi dan setiap tahapan perhitungan untuk alternatif desa.',`<button class="btn btn-soft" data-page="criteria">Atur bobot →</button>`)}
+ <div class="card" style="margin-bottom:14px"><div class="toolbar"><label class="small muted" for="village-detail">Pilih desa untuk melihat rincian:</label><select class="select" id="village-detail" style="min-width:240px">${[...records].sort((a,b)=>a.desa.localeCompare(b.desa,'id')).map(r=>`<option value="${r.id}" ${r.id===Number(selectedVillageId)?'selected':''}>${esc(r.desa)} — ${esc(r.kecamatan)}</option>`).join('')}</select><span class="pill">λ = ${fmt(settings.lambda,2)}</span></div>
+ ${selected?`<div class="grid split-grid"><div><h2>${esc(selected.desa)}</h2><p class="subhead">${esc(selected.kecamatan)} · Peringkat ${selected.rank} dari ${records.length}</p><div class="grid criteria-grid" style="margin-top:14px">${CRITERIA.map((c,j)=>`<div class="card" style="padding:12px;box-shadow:none;background:var(--surface-soft)"><div class="criterion-code">${c.code} · ${c.type}</div><div style="font-size:11px;font-weight:750;margin-top:5px">${fmt(selected[['k1','k2','k3','k4'][j]])}${j===2?' km':''}</div><div class="muted small" style="margin-top:4px">Normalisasi: <strong>${fmt(selected.norm[j],5)}</strong></div><div class="muted small">Bobot: ${fmt(settings.weights[j]*100,1)}%</div></div>`).join('')}</div></div><div class="card" style="box-shadow:none;background:var(--surface-soft)"><div class="card-head"><div><h3>Nilai agregasi & kompromi</h3><p>Nilai antara sampai skor akhir</p></div><span class="pill good">Rank ${selected.rank}</span></div><div class="info-list"><div class="info-row"><span>Sᵢ · Jumlah terbobot</span><strong>${fmt(selected.S,7)}</strong></div><div class="info-row"><span>Pᵢ · Pangkat terbobot</span><strong>${fmt(selected.P,7)}</strong></div><div class="info-row"><span>kᵢₐ</span><strong>${fmt(selected.kia,7)}</strong></div><div class="info-row"><span>kᵢᵦ</span><strong>${fmt(selected.kib,7)}</strong></div><div class="info-row"><span>kᵢ꜀</span><strong>${fmt(selected.kic,7)}</strong></div><div class="info-row"><span><strong>Skor akhir kᵢ</strong></span><strong style="color:var(--site-primary);font-size:17px">${fmtScore(selected.ki)}</strong></div></div></div></div>`:''}</div>
+ <div class="card"><div class="card-head"><div><h2>Ringkasan hasil perhitungan</h2><p>12 desa teratas berdasarkan skor akhir kᵢ</p></div></div><div class="table-wrap"><table><thead><tr><th>Rank</th><th>Alternatif Desa</th><th>R1 · R2 · R3 · R4</th><th>Sᵢ</th><th>Pᵢ</th><th>Skor kᵢ</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+ <div class="card" style="margin-top:14px"><h3>Formula yang diterapkan</h3><div class="formula">Benefit: rᵢⱼ = (xᵢⱼ − min xⱼ) / (max xⱼ − min xⱼ)<br>Cost: rᵢⱼ = (max xⱼ − xᵢⱼ) / (max xⱼ − min xⱼ)<br>Sᵢ = Σ (wⱼ × rᵢⱼ)<br>Pᵢ = Σ (rᵢⱼ ^ wⱼ)<br>kᵢₐ = (Pᵢ + Sᵢ) / Σ(Pᵢ + Sᵢ)<br>kᵢᵦ = (Sᵢ / min Sᵢ) + (Pᵢ / min Pᵢ)<br>kᵢ꜀ = (λSᵢ + (1−λ)Pᵢ) / (λ max Sᵢ + (1−λ) max Pᵢ)<br>kᵢ = (kᵢₐ × kᵢᵦ × kᵢ꜀)^(1/3) + (kᵢₐ + kᵢᵦ + kᵢ꜀)/3</div><div class="data-note">Jika nilai suatu kriteria sama untuk seluruh desa, aplikasi menetapkan hasil normalisasinya 1 agar pembagian dengan nol dapat dihindari. Formula lainnya mengikuti dokumen penjelasan COCOSO DESA.</div></div>`;
+}
+function rankingFiltered(){if(rankingFilter==='Top 10')return results.slice(0,10);if(rankingFilter==='Bottom 5')return results.slice(-5);return results;}
+function pageRanking(){const list=rankingFiltered(),pages=Math.max(1,Math.ceil(list.length/15));rankPage=Math.min(rankPage,pages);const slice=list.slice((rankPage-1)*15,rankPage*15);
+ return `${pageHead('HASIL EVALUASI','Perankingan Desa','Urutan prioritas berdasarkan skor kompromi akhir (kᵢ) dari terbesar ke terkecil.',`<button class="btn btn-primary" data-action="export-ranking">⇩ Export Ranking</button>`)}
+ <div class="card"><div class="toolbar"><div class="searchbox"><span>⌕</span><input id="rank-search" placeholder="Cari desa atau kecamatan…" value="${esc(searchTerm)}"></div><select class="select" id="ranking-filter"><option ${rankingFilter==='Semua Desa'?'selected':''}>Semua Desa</option><option ${rankingFilter==='Top 10'?'selected':''}>Top 10</option><option ${rankingFilter==='Bottom 5'?'selected':''}>Bottom 5</option></select><button class="btn btn-soft" data-action="print">Cetak / PDF</button></div>
+ <div class="table-wrap"><table><thead><tr><th>Rank</th><th>Kecamatan</th><th>Nama Desa</th><th>K1 Pelayanan</th><th>K2 Penduduk</th><th>K3 Jarak</th><th>K4 Buku</th><th>Skor Akhir (kᵢ)</th></tr></thead><tbody>${slice.filter(r=>!searchTerm||`${r.desa} ${r.kecamatan}`.toLowerCase().includes(searchTerm.toLowerCase())).map(r=>`<tr><td>${rankBadge(r.rank)}</td><td>${esc(r.kecamatan)}</td><td><strong>${esc(r.desa)}</strong></td><td>${fmt(r.k1)}</td><td>${fmt(r.k2)}</td><td>${fmt(r.k3)} km</td><td>${r.k4}</td><td class="score">${fmtScore(r.ki)}</td></tr>`).join('')||'<tr><td class="empty" colspan="8">Tidak ada data yang cocok.</td></tr>'}</tbody></table></div>
+ <div class="pagination"><span>${rankingFilter}: ${list.length} desa</span><div class="page-buttons"><button data-action="rank-prev" ${rankPage===1?'disabled':''}>‹</button><span class="pill">${rankPage} / ${pages}</span><button data-action="rank-next" ${rankPage===pages?'disabled':''}>›</button></div></div></div>
+ <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:14px"><div class="card"><div class="card-head"><div><h3>Desa terbaik</h3><p>Skor tertinggi</p></div><span class="pill good">Top 1</span></div><div style="font-size:18px;font-weight:850">${esc(results[0]?.desa||'—')}</div><div class="muted small">${esc(results[0]?.kecamatan||'')} · ${fmtScore(results[0]?.ki||0)}</div></div><div class="card"><div class="card-head"><div><h3>Prioritas pembinaan</h3><p>5 skor paling rendah</p></div><span class="pill warn">Bottom 5</span></div><div class="small">${results.slice(-5).map(r=>esc(r.desa)).join(' · ')}</div></div></div>`;
+}
+function pageCriteria(){const sum=settings.weights.reduce((a,b)=>a+b,0),valid=Math.abs(sum-1)<.00001;
+ return `${pageHead('PENGATURAN MODEL','Kriteria & Bobot','Sesuaikan bobot penilaian. Tipe benefit/cost mengikuti dokumen metodologi.',`<button class="btn btn-soft" data-action="reset-weights">↺ Reset default</button>`)}
+ <div class="grid criteria-grid">${CRITERIA.map((c,i)=>`<div class="card criterion-card"><div class="criterion-top"><span class="criterion-code">${c.code}</span><span class="pill ${c.type==='Benefit'?'good':'warn'}">${c.type}</span></div><div><h2>${c.name}</h2><p class="subhead">${c.desc}</p></div><div><label class="small muted" for="weight-${i}">Bobot (0–1)</label><input class="weight-input" id="weight-${i}" type="number" min="0" max="1" step="0.01" value="${settings.weights[i]}" data-weight="${i}"></div><div class="small muted">Bobot saat ini: <strong>${fmt(settings.weights[i]*100,1)}%</strong></div></div>`).join('')}</div>
+ <div class="card" style="margin-top:14px"><div style="display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap"><div><div class="muted small">TOTAL BOBOT</div><div class="total-weight ${valid?'valid':'invalid'}" id="total-weight">${fmt(sum*100,2)}% ${valid?'✓ Valid':'· Harus 100%'}</div></div><div class="field" style="min-width:160px"><label for="lambda-input">Parameter λ (lambda)</label><input class="weight-input" id="lambda-input" type="number" min="0" max="1" step="0.05" value="${settings.lambda}"></div><button class="btn btn-primary" data-action="save-weights" ${valid?'':'disabled'}>Terapkan bobot & hitung ulang</button></div><p class="subhead">Bobot harus berjumlah 1,00 (100%). Parameter λ digunakan pada perhitungan kᵢ꜀. Nilai default λ = 0,5.</p></div>
+ <div class="data-note" style="margin-top:13px">Perubahan bobot akan mengubah semua nilai agregasi dan peringkat desa. Pengaturan tersimpan pada database lokal browser ini.</div>`;
+}
+function pageReports(){const best=results[0],bottom=results.slice(-5), avg=results.reduce((s,r)=>s+r.ki,0)/(results.length||1);
+ return `${pageHead('DOKUMEN EVALUASI','Laporan & Ekspor','Ringkasan hasil penilaian dan keluaran data untuk dokumentasi.',`<button class="btn btn-primary" data-action="print">Cetak / Simpan PDF</button>`)}
+ <div class="grid stats-grid"><div class="card stat-card"><div class="stat-label">DESA DIEVALUASI</div><div class="stat-value">${records.length}</div><div class="stat-foot">Seluruh alternatif data</div></div><div class="card stat-card"><div class="stat-label">JUMLAH KECAMATAN</div><div class="stat-value">${districts().length}</div><div class="stat-foot">Wilayah evaluasi</div></div><div class="card stat-card"><div class="stat-label">SKOR TERTINGGI</div><div class="stat-value">${fmtScore(best?.ki||0)}</div><div class="stat-foot">${esc(best?.desa||'')}</div></div><div class="card stat-card"><div class="stat-label">RATA-RATA SKOR</div><div class="stat-value">${fmtScore(avg)}</div><div class="stat-foot">Skor akhir kᵢ</div></div></div>
+ <div class="grid split-grid"><div class="card"><div class="card-head"><div><h2>Top 10 Desa Terbaik</h2><p>Ranking utama hasil perhitungan CoCoSo</p></div><button class="btn btn-small btn-soft" data-action="export-ranking">Export CSV</button></div>${topTable(results,10)}</div><div class="card"><div class="card-head"><div><h2>Bottom 5 Desa</h2><p>Alternatif prioritas pembinaan</p></div></div><div class="info-list">${bottom.map(r=>`<div class="info-row"><span>${r.rank}. ${esc(r.desa)}<div class="village-district">${esc(r.kecamatan)}</div></span><strong>${fmtScore(r.ki)}</strong></div>`).join('')}</div></div></div>
+ <div class="card" style="margin-top:14px"><div class="card-head"><div><h2>Unduh data & dokumentasi</h2><p>Ekspor data masukan atau hasil perangkingan.</p></div></div><div class="toolbar"><button class="btn btn-primary" data-action="export-data">⇩ Data Desa (CSV/Excel)</button><button class="btn btn-primary" data-action="export-ranking">⇩ Hasil CoCoSo (CSV/Excel)</button><button class="btn btn-soft" data-action="print">▧ Cetak / Simpan PDF</button></div><div class="data-note">Ekspor spreadsheet menghasilkan CSV ber-UTF-8 yang dapat langsung dibuka di Microsoft Excel. Untuk PDF, gunakan perintah cetak browser lalu pilih “Save as PDF”.</div></div>`;
+}
+function render(){updateResults();const pages={dashboard:pageDashboard,data:pageData,calculation:pageCalculation,ranking:pageRanking,criteria:pageCriteria,reports:pageReports};$('#content').innerHTML=pages[activePage]();$('#crumb').textContent=({dashboard:'Dashboard',data:'Data Desa',calculation:'Perhitungan',ranking:'Perankingan',criteria:'Kriteria & Bobot',reports:'Laporan'})[activePage];$$('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===activePage));}
+function navigate(page){activePage=page;searchTerm='';if(page==='data'){dataPage=1;districtFilter='Semua Kecamatan';}if(page==='ranking'){rankPage=1;rankingFilter='Semua Desa';}render();window.scrollTo({top:0,behavior:'smooth'});}
+function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove('show'),2600);}
+function openModal(id=null){const record=id?records.find(r=>r.id===id):null;const districtsList=districts();$('#modal').innerHTML=`<div class="modal-head"><div><div class="eyebrow">DATA ALTERNATIF</div><h2>${record?'Edit Data Desa':'Tambah Desa'}</h2></div><button class="btn btn-small" data-action="close-modal">✕</button></div><form id="village-form"><div class="form-grid"><div class="field"><label>Nomor / ID Desa</label><input type="number" name="id" min="1" value="${record?.id??(Math.max(0,...records.map(r=>r.id))+1)}" required ${record?'readonly':''}></div><div class="field"><label>Kecamatan</label><input type="text" name="kecamatan" value="${esc(record?.kecamatan||'')}" list="district-options" required><datalist id="district-options">${districtsList.map(d=>`<option value="${esc(d)}">`).join('')}</datalist></div><div class="field full"><label>Nama Desa</label><input type="text" name="desa" value="${esc(record?.desa||'')}" required></div><div class="field"><label>K1 · Jumlah Pelayanan</label><input type="number" name="k1" min="0" step="1" value="${record?.k1??0}" required></div><div class="field"><label>K2 · Jumlah Penduduk</label><input type="number" name="k2" min="0" step="1" value="${record?.k2??0}" required></div><div class="field"><label>K3 · Jarak (km)</label><input type="number" name="k3" min="0" step="0.1" value="${record?.k3??0}" required></div><div class="field"><label>K4 · Pelaporan Buku Pemakaman</label><select name="k4" class="select"><option value="1" ${(record?.k4??1)===1?'selected':''}>1 · Melaporkan</option><option value="0" ${record?.k4===0?'selected':''}>0 · Tidak melaporkan</option></select></div></div><div class="modal-actions"><button type="button" class="btn" data-action="close-modal">Batal</button><button class="btn btn-primary" type="submit">Simpan Data</button></div></form>${record?`<div style="border-top:1px solid var(--line);margin-top:15px;padding-top:12px;text-align:right"><button class="btn btn-small btn-danger" data-action="delete" data-id="${record.id}">Hapus desa ini</button></div>`:''}`;$('#modal-backdrop').classList.add('open');}
+function closeModal(){$('#modal-backdrop').classList.remove('open');}
+async function exportCSV(kind){const header=kind==='data'?['No','Kecamatan','Nama Desa','K1 Jumlah Pelayanan','K2 Jumlah Penduduk','K3 Jarak (km)','K4 Pelaporan Buku Pemakaman']:['Rank','Kecamatan','Nama Desa','K1 Pelayanan','K2 Penduduk','K3 Jarak (km)','K4 Buku Pemakaman','R1 K1','R2 K2','R3 K3','R4 K4','S_i','P_i','k_ia','k_ib','k_ic','Skor Akhir k_i'];
+ const rows=kind==='data'?records.slice().sort((a,b)=>a.id-b.id).map(r=>[r.id,r.kecamatan,r.desa,r.k1,r.k2,r.k3,r.k4]):results.map(r=>[r.rank,r.kecamatan,r.desa,r.k1,r.k2,r.k3,r.k4,...r.norm,r.S,r.P,r.kia,r.kib,r.kic,r.ki]);
+ const csv=[header,...rows].map(row=>row.map(v=>{const s=String(v??'');return /[",\n;]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}).join(',')).join('\r\n');
+ const blob=new Blob(['\uFEFF',csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=kind==='data'?'data_desa_gisa_kubu_raya.csv':'hasil_perankingan_cocoso_kubu_raya.csv';a.click();URL.revokeObjectURL(url);showToast('File CSV berhasil disiapkan untuk dibuka di Excel.');}
+function csvParse(text){const out=[];let row=[],v='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(q&&text[i+1]==='"'){v+='"';i++;}else q=!q;}else if((c===','||c===';'||c==='\t')&&!q){row.push(v);v='';}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&text[i+1]==='\n')i++;row.push(v);if(row.some(x=>x.trim()))out.push(row);row=[];v='';}else v+=c;}if(v||row.length){row.push(v);if(row.some(x=>x.trim()))out.push(row);}return out;}
+async function unzipXlsx(buffer){const view=new DataView(buffer);let eocd=-1;for(let p=buffer.byteLength-22;p>=Math.max(0,buffer.byteLength-65557);p--){if(view.getUint32(p,true)===0x06054b50){eocd=p;break;}}if(eocd<0)throw new Error('Struktur ZIP Excel tidak terbaca');const count=view.getUint16(eocd+10,true),cdOff=view.getUint32(eocd+16,true),files={};let p=cdOff;for(let i=0;i<count;i++){if(view.getUint32(p,true)!==0x02014b50)break;const method=view.getUint16(p+10,true),size=view.getUint32(p+20,true),nlen=view.getUint16(p+28,true),elen=view.getUint16(p+30,true),clen=view.getUint16(p+32,true),local=view.getUint32(p+42,true);const name=new TextDecoder().decode(new Uint8Array(buffer,p+46,nlen));const ln=view.getUint16(local+26,true),le=view.getUint16(local+28,true),start=local+30+ln+le;const compressed=new Uint8Array(buffer,start,size);let bytes;if(method===0)bytes=compressed;else if(method===8){if(!('DecompressionStream' in window))throw new Error('Browser tidak mendukung pembacaan XLSX. Simpan file sebagai CSV lalu impor kembali.');const ds=new DecompressionStream('deflate-raw');bytes=new Uint8Array(await new Response(new Blob([compressed]).stream().pipeThrough(ds)).arrayBuffer());}else{p+=46+nlen+elen+clen;continue;}files[name]=new TextDecoder().decode(bytes);p+=46+nlen+elen+clen;}return files;}
+function xlsxRows(xml,shared){const doc=new DOMParser().parseFromString(xml,'application/xml');const rowNodes=[...doc.getElementsByTagName('row')];return rowNodes.map(rn=>{const row=[];for(const c of [...rn.getElementsByTagName('c')]){const ref=c.getAttribute('r')||'';const letters=ref.replace(/[0-9]/g,'');let col=0;for(const ch of letters)col=col*26+ch.charCodeAt(0)-64;col-=1;const type=c.getAttribute('t');let val='';if(type==='inlineStr')val=c.getElementsByTagName('t')[0]?.textContent||'';else{val=c.getElementsByTagName('v')[0]?.textContent||'';if(type==='s')val=shared[Number(val)]??'';}row[col]=val;}return row;});}
+async function parseExcel(file){if(file.name.toLowerCase().endsWith('.csv')||file.name.toLowerCase().endsWith('.txt'))return csvParse(await file.text());const files=await unzipXlsx(await file.arrayBuffer());const sharedXml=files['xl/sharedStrings.xml'];let shared=[];if(sharedXml){const d=new DOMParser().parseFromString(sharedXml,'application/xml');shared=[...d.getElementsByTagName('si')].map(si=>[...si.getElementsByTagName('t')].map(t=>t.textContent).join(''));}const sheetName=Object.keys(files).find(k=>/^xl\/worksheets\/sheet\d+\.xml$/.test(k));if(!sheetName)throw new Error('Worksheet tidak ditemukan dalam XLSX');return xlsxRows(files[sheetName],shared);}
+function importRowsToRecords(rows){const clean=rows.map(r=>r.map(x=>String(x??'').trim()));let hidx=clean.findIndex(r=>r.some(x=>normKey(x).includes('KECAMATAN'))&&r.some(x=>normKey(x).includes('NAMADESA')));if(hidx<0)throw new Error('Header tidak ditemukan. Pastikan ada kolom KECAMATAN dan NAMA DESA.');const h=clean[hidx].map(normKey);const find=(patterns)=>h.findIndex(x=>patterns.some(p=>x.includes(p)));const ix={id:find(['NO','NOMOR','ID']),kec:find(['KECAMATAN']),desa:find(['NAMADESA','DESA']),k1:find(['K1','JUMLAHPELAYANAN','PELAYANAN']),k2:find(['K2','JUMLAHPENDUDUK','PENDUDUK']),k3:find(['K3','JARAK']),k4:find(['K4','BUKUPOKOK','PEMAKAMAN'])};if([ix.kec,ix.desa,ix.k1,ix.k2,ix.k3,ix.k4].some(i=>i<0))throw new Error('Kolom wajib belum lengkap. Dibutuhkan kecamatan, desa, K1, K2, K3, dan K4.');let lastKec='';const out=[];for(let n=hidx+1;n<clean.length;n++){const r=clean[n];if(!r[ix.desa])continue;lastKec=r[ix.kec]||lastKec;const num=(i)=>Number(String(r[i]||'0').replace(/\./g,'').replace(',','.'))||0;out.push({id:ix.id>=0&&num(ix.id)>0?num(ix.id):out.length+1,kecamatan:lastKec.toUpperCase(),desa:r[ix.desa].toUpperCase(),k1:num(ix.k1),k2:num(ix.k2),k3:num(ix.k3),k4:num(ix.k4)?1:0});}if(!out.length)throw new Error('Tidak ada baris data yang dapat diimpor.');return out;}
+async function importFile(file){try{const parsed=await parseExcel(file);const imported=importRowsToRecords(parsed);if(!confirm(`Ditemukan ${imported.length} baris desa. Import akan mengganti seluruh data yang sedang tersimpan. Lanjutkan?`))return;records=imported;await saveRecords();dataPage=1;render();showToast(`${imported.length} desa berhasil diimpor.`);}catch(e){alert('Import gagal: '+e.message);}}
+function handleClick(e){const nav=e.target.closest('[data-page]');if(nav){navigate(nav.dataset.page);return;}const b=e.target.closest('[data-action]');if(!b)return;const a=b.dataset.action,id=Number(b.dataset.id);if(a==='go-ranking')navigate('ranking');if(a==='add')openModal();if(a==='edit')openModal(id);if(a==='close-modal')closeModal();if(a==='import')$('#import-file')?.click();if(a==='export-data')exportCSV('data');if(a==='export-ranking')exportCSV('ranking');if(a==='print')window.print();if(a==='data-prev'&&dataPage>1){dataPage--;render();}if(a==='data-next'){dataPage++;render();}if(a==='rank-prev'&&rankPage>1){rankPage--;render();}if(a==='rank-next'){rankPage++;render();}if(a==='delete'&&confirm('Hapus data desa ini?')){records=records.filter(r=>r.id!==id);saveRecords().then(()=>{closeModal();render();showToast('Data desa dihapus.');});}if(a==='reset-weights'){if(confirm('Kembalikan bobot ke 25% untuk setiap kriteria dan λ = 0,5?')){settings={...DEFAULT_SETTINGS,weights:[...DEFAULT_SETTINGS.weights]};saveSettings().then(()=>{render();showToast('Pengaturan default dipulihkan.');});}}if(a==='save-weights')saveWeights();}
+async function saveWeights(){const weights=[0,1,2,3].map(i=>Number($(`#weight-${i}`).value));const lambda=Number($('#lambda-input').value);if(weights.some(w=>!Number.isFinite(w)||w<0||w>1)||Math.abs(weights.reduce((a,b)=>a+b,0)-1)>.00001){alert('Total bobot harus tepat 1,00 (100%) dan setiap bobot berada pada rentang 0–1.');return;}if(!Number.isFinite(lambda)||lambda<0||lambda>1){alert('Nilai lambda harus berada pada rentang 0–1.');return;}settings={weights,lambda};await saveSettings();render();showToast('Bobot diterapkan. Hasil CoCoSo dihitung ulang.');}
+document.addEventListener('click',handleClick);
+document.addEventListener('submit',async e=>{if(e.target.id!=='village-form')return;e.preventDefault();const fd=new FormData(e.target);const r={id:Number(fd.get('id')),kecamatan:String(fd.get('kecamatan')).trim().toUpperCase(),desa:String(fd.get('desa')).trim().toUpperCase(),k1:Number(fd.get('k1')),k2:Number(fd.get('k2')),k3:Number(fd.get('k3')),k4:Number(fd.get('k4'))};if(!r.id||!r.kecamatan||!r.desa||[r.k1,r.k2,r.k3].some(n=>!Number.isFinite(n)||n<0)){alert('Periksa kembali data yang dimasukkan.');return;}if(records.some(x=>x.id===r.id)){records=records.map(x=>x.id===r.id?r:x);}else records.push(r);await saveRecords();closeModal();render();showToast('Data desa berhasil disimpan.');});
+document.addEventListener('input',e=>{if(e.target.id==='search-input'){searchTerm=e.target.value;dataPage=1;const pos=e.target.selectionStart;render();const el=$('#search-input');el.focus();el.setSelectionRange(pos,pos);}if(e.target.id==='rank-search'){searchTerm=e.target.value;rankPage=1;render();const el=$('#rank-search');el.focus();el.setSelectionRange(searchTerm.length,searchTerm.length);}});
+document.addEventListener('change',e=>{if(e.target.id==='district-filter'){districtFilter=e.target.value;dataPage=1;render();}if(e.target.id==='ranking-filter'){rankingFilter=e.target.value;rankPage=1;searchTerm='';render();}if(e.target.id==='village-detail'){selectedVillageId=Number(e.target.value);render();}if(e.target.id==='import-file'&&e.target.files[0])importFile(e.target.files[0]);if(e.target.dataset.weight!==undefined){const sum=[0,1,2,3].reduce((a,i)=>a+Number($(`#weight-${i}`)?.value||0),0);const el=$('#total-weight');if(el){const valid=Math.abs(sum-1)<.00001;el.textContent=fmt(sum*100,2)+'% '+(valid?'✓ Valid':'· Harus 100%');el.className='total-weight '+(valid?'valid':'invalid');const btn=$('[data-action="save-weights"]');if(btn)btn.disabled=!valid;}}});
+$('#modal-backdrop').addEventListener('click',e=>{if(e.target.id==='modal-backdrop')closeModal();});
+init();
+</script>
+</body>
+</html>
